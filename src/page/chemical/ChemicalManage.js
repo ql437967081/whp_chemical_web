@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Space, Tabs } from 'antd';
 import DataPresentation from './DataPresentation';
-import data51 from './data51';
-import data52 from './data52';
+import data51 from './mock/data51';
+import data52 from './mock/data52';
 import { PlusOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
