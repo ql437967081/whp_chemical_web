@@ -1,5 +1,5 @@
 import React from 'react';
-import { Breadcrumb, Layout } from 'antd';
+import { Breadcrumb, Layout, Space } from 'antd';
 import './Admin.css';
 import AdminMenu from '../menu/AdminMenu';
 import { Link } from 'react-router-dom';
@@ -45,8 +45,10 @@ export default class Admin extends React.Component {
                 <Layout className="site-layout" style={{ marginLeft: 200 }}>
                     <Header className="site-layout-background" style={{ padding: 0 }}>
                         <Link to={'/login'} style={{ float: 'right', marginRight: 50 }}>
-                            <LogoutOutlined />
-                            退出
+                            <Space>
+                                <LogoutOutlined />
+                                退出
+                            </Space>
                         </Link>
                     </Header>
                     <Content style={{ margin: '0 16px' }}>

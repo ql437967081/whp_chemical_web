@@ -71,6 +71,10 @@ const menuList = [
                 key: `${baseKey}/option12`
             }
         ]
+    },
+    {
+        title: '化学品数据管理',
+        key: `${baseKey}/chemical_manage`
     }
 ];
 
