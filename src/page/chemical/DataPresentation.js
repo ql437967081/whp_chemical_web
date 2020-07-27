@@ -67,75 +67,42 @@ export default class DataPresentation extends React.Component {
 
     processBasic = () => {
         this.processDescriptions(cfg.basicConfig, 0);
+        this.config[0]['disabled'] = true;
     };
 
-    processEmergency = () => {
-        this.processTypography(['emergency'], 1)
-    };
+    processEmergency = () => this.processTypography(['emergency'], 1);
 
-    processPhysicalChemicalProperties = () => {
-        this.processDescriptions(cfg.physicalChemicalPropertiesConfig, 2);
-    };
+    processPhysicalChemicalProperties = () => this.processDescriptions(cfg.physicalChemicalPropertiesConfig, 2);
 
-    processDangerClass = () => {
-        this.processTypography(['other', 'dangerClass'], 3)
-    };
+    processDangerClass = () => this.processTypography(['other', 'dangerClass'], 3);
 
-    processDanger = () => {
-        this.processTypography(['danger'], 4);
-    };
+    processDanger = () => this.processTypography(['danger'], 4);
 
-    processPrevent = () => {
-        this.processTypography(['prevent'], 5);
-    };
+    processPrevent = () => this.processTypography(['prevent'], 5);
 
-    processResponse = () => {
-        this.processTypography(['response'], 6)
-    };
+    processResponse = () => this.processTypography(['response'], 6);
 
-    processStore = () => {
-        this.processTypography(['store'], 7)
-    };
+    processStore = () => this.processTypography(['store'], 7);
 
-    processDisposal = () => {
-        this.processLabeledTypography(cfg.disposalConfig, 8);
-    };
+    processDisposal = () => this.processLabeledTypography(cfg.disposalConfig, 8);
 
-    processPhysicalChemical = () => {
-        this.processTypography(['physicalChemical'], 9);
-    };
+    processPhysicalChemical = () => this.processTypography(['physicalChemical'], 9);
 
-    processHealth = () => {
-        this.processTypography(['health'], 10);
-    };
+    processHealth = () => this.processTypography(['health'], 10);
 
-    processEnvironment = () => {
-        this.processTypography(['environment'], 11);
-    };
+    processEnvironment = () => this.processTypography(['environment'], 11);
 
-    processFirstAid = () => {
-        this.processLabeledTypography(cfg.firstAidConfig, 12);
-    };
+    processFirstAid = () => this.processLabeledTypography(cfg.firstAidConfig, 12);
 
-    processLeakMethod = () => {
-        this.processLabeledTypography(cfg.leakMethodConfig, 13);
-    };
+    processLeakMethod = () => this.processLabeledTypography(cfg.leakMethodConfig, 13);
 
-    processStepStoreAttentionConfig = () => {
-        this.processLabeledTypography(cfg.stepStoreAttentionConfig, 14);
-    };
+    processStepStoreAttentionConfig = () => this.processLabeledTypography(cfg.stepStoreAttentionConfig, 14);
 
-    processEngControl = () => {
-        this.processTypography(['engControl'], 15);
-    };
+    processEngControl = () => this.processTypography(['engControl'], 15);
 
-    processSelfProtectConfig = () => {
-        this.processLabeledTypography(cfg.selfProtectConfig, 16);
-    };
+    processSelfProtectConfig = () => this.processLabeledTypography(cfg.selfProtectConfig, 16);
 
-    processTransAttention = () => {
-        this.processTypography(['transAttention'], 17);
-    };
+    processTransAttention = () => this.processTypography(['transAttention'], 17);
 
     processBook = () => {
         const { Text } = Typography;
@@ -147,7 +114,7 @@ export default class DataPresentation extends React.Component {
                             const { label, key } = props;
                             return (
                                 this.props.data[key] === 1 &&
-                                <Text underline>
+                                <Text underline key={key}>
                                     {label}
                                 </Text>
                             );
@@ -184,11 +151,13 @@ export default class DataPresentation extends React.Component {
     render() {
         this.processData();
         return (
-            <Collapse defaultActiveKey={collapseHeaderConfig[0].key}>
+            <Collapse defaultActiveKey={this.config[0].key}>
                 {this.config.map(props => {
-                    const { key, header, text } = props;
+                    const { key, header, text, disabled } = props;
+                    const panelProps = { key, header };
+                    if (disabled) { panelProps['disabled'] = true; }
                     return (
-                        <Panel key={key} header={header}>
+                        <Panel {...panelProps}>
                             {text}
                         </Panel>
                     )

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Space, Tabs } from 'antd';
 import DataPresentation from './DataPresentation';
+import NewChemicalForm from './NewChemicalForm';
 import data51 from './mock/data51';
 import data52 from './mock/data52';
 import { PlusOutlined } from '@ant-design/icons';
@@ -169,8 +170,8 @@ export default class ChemicalManage extends React.Component{
 
     state = {
         panes: [
-            { title: '镉[非发火的]', content: <DataPresentation data={data51} key={51} />, key: '51' },
-            { title: '1,2-二甲苯', content: <DataPresentation data={data52} key={52} />, key: '52' },
+            { title: '镉[非发火的]', content: <DataPresentation data={data51} />, key: '51' },
+            { title: '1,2-二甲苯', content: <DataPresentation data={data52} />, key: '52' },
         ],
         activeKey: '51'
     };
@@ -186,7 +187,7 @@ export default class ChemicalManage extends React.Component{
     add = () => {
         const { panes } = this.state;
         const activeKey = `newTab${this.newTabIndex++}`;
-        panes.push({ title: `新增化学品 ${this.newTabIndex}`, content: '新增化学品', key: activeKey });
+        panes.push({ title: `新增化学品 ${this.newTabIndex}`, content: <NewChemicalForm />, key: activeKey });
         this.setState({ panes, activeKey });
     };
 
