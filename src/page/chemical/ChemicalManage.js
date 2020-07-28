@@ -1,10 +1,11 @@
 import React from 'react';
-import { Button, Space, Tabs } from 'antd';
+import { Button, Col, Row, Space, Tabs } from 'antd';
 import DataPresentation from './DataPresentation';
 import NewChemicalForm from './NewChemicalForm';
 import data51 from './mock/data51';
 import data52 from './mock/data52';
 import { PlusOutlined } from '@ant-design/icons';
+import ChemicalInput from "./ChemicalInput";
 
 const { TabPane } = Tabs;
 
@@ -176,6 +177,18 @@ export default class ChemicalManage extends React.Component{
         activeKey: '51'
     };
 
+    showDetail = data => {
+        const { panes } = this.state;
+        const { id, cnName } = data;
+        const activeKey = `${id}`;
+        if (panes.find(pane => pane.key === activeKey)) {
+            this.setState({ activeKey });
+        } else {
+            panes.push({ title: cnName, content: <DataPresentation data={data} />, key: activeKey });
+            this.setState({ panes, activeKey });
+        }
+    };
+
     onChange = activeKey => {
         this.setState({ activeKey });
     };
@@ -210,7 +223,14 @@ export default class ChemicalManage extends React.Component{
         const { panes, activeKey } = this.state;
         return (
             <Space direction={"vertical"}>
-                <Button type={"primary"} onClick={this.add} icon={<PlusOutlined />}>新增</Button>
+                <Row gutter={[8, 8]}>
+                    <Col {...{ xs: 24, md: 10 }}>
+                        <ChemicalInput showDetail={this.showDetail} />
+                    </Col>
+                    <Col {...{ xs: 24, md: { offset: 8, span: 6 } }} style={{ textAlign: 'right' }}>
+                        <Button type={"primary"} onClick={this.add} icon={<PlusOutlined />}>新增</Button>
+                    </Col>
+                </Row>
                 <Tabs
                     hideAdd
                     onChange={this.onChange}

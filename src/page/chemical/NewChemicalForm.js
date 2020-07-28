@@ -23,7 +23,7 @@ const processDescriptions = (descriptionsConfig, index, config) => {
                                 required: true,
                                 message: `请输入${label}`
                             }
-                        ]
+                        ];
                     }
                     return (
                         <Col {...layout} key={key}>
