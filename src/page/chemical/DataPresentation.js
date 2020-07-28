@@ -66,8 +66,34 @@ export default class DataPresentation extends React.Component {
     };
 
     processBasic = () => {
-        this.processDescriptions(cfg.basicConfig, 0);
-        this.config[0]['disabled'] = true;
+        const { Item } = Descriptions;
+        const descriptionsItems = cfg.basicConfig.map(props => {
+            const { label, key } = props;
+            return (
+                <Item label={label} key={key}>
+                    {this.props.data[key]}
+                </Item>
+            );
+        });
+        const { uri, cnName } = this.props.data;
+        const label = '二维码';
+        descriptionsItems.push(
+            <Item label={label} key={'uri'}>
+                <div style={{ display: "inline-block", verticalAlign: "middle" }}>
+                    <span />
+                    <img src={uri} alt={`${cnName}${label}`} width={100} height={100} />
+                </div>
+            </Item>
+        );
+        this.config.push({
+            text: (
+                <Descriptions>
+                    {descriptionsItems}
+                </Descriptions>
+            ),
+            ...collapseHeaderConfig[0],
+            disabled: true
+        });
     };
 
     processEmergency = () => this.processTypography(['emergency'], 1);
