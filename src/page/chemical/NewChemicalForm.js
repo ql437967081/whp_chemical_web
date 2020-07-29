@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Checkbox, Col, Collapse, Form, Input, Row, Space } from 'antd';
 import * as cfg from './config/config';
+import { axios, handleFailure } from '../../http_request/default';
+import { addChemicalUrl } from '../../http_request/url';
 
 const { Panel } = Collapse;
 const { collapseHeaderConfigForAddition } = cfg;
@@ -188,6 +190,9 @@ const NewChemicalForm = () => {
             addChemicalVO[bookKey] = values[bookKey] ? 1 : 0;
         }
         console.log('Final addChemicalVO: ', addChemicalVO);
+        axios.post(addChemicalUrl, addChemicalVO).then(function (response) {
+            console.log(response);
+        }).catch(handleFailure);
     };
 
     const config = [];

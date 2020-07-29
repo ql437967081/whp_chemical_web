@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { AutoComplete } from 'antd';
-import axios from "axios";
+import { axios, handleFailure } from '../../http_request/default';
+import { getChemicalsUrl } from '../../http_request/url';
 
 const { Option } = AutoComplete;
-const searchUrl = '/whp/chemical/getChemicals';
 
 let timeout;
 let currentValue;
@@ -16,14 +16,11 @@ const fetch = (value, callback) => {
     currentValue = value;
 
     const fake = () => {
-        const handleFailure = error => {
-            console.log(error);
-        };
-
-        axios.all([
-            axios.post(searchUrl, { cas: value }),
-            axios.post(searchUrl, { name: value })
-        ]).then(axios.spread(function (response1, response2) {
+        const { all, post, spread } = axios;
+        all([
+            post(getChemicalsUrl, { cas: value }),
+            post(getChemicalsUrl, { name: value })
+        ]).then(spread(function (response1, response2) {
             if (currentValue === value) {
                 const data = [];
                 const idSet = new Set();
