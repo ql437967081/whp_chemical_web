@@ -42,7 +42,7 @@ const fetch = (value, callback) => {
     timeout = setTimeout(fake, 300);
 };
 
-const ChemicalInput = props => {
+export default function ChemicalInput(props) {
     const [value, setValue] = useState('');
     const [options, setOptions] = useState([]);
 
@@ -87,5 +87,3 @@ const ChemicalInput = props => {
         </AutoComplete>
     );
 };
-
-export default ChemicalInput;

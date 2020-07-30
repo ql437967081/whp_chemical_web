@@ -176,8 +176,7 @@ const processData = config => {
     processBook(config);
 };
 
-const NewChemicalForm = () => {
-
+export default function NewChemicalForm() {
     const onFinish = values => {
         console.log('Received values of form: ', values);
         const { other } = values;
@@ -225,5 +224,3 @@ const NewChemicalForm = () => {
         </Form>
     );
 };
-
-export default NewChemicalForm;

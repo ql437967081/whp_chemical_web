@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Col, Row, Space, Tabs } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import DataPresentation from './DataPresentation';
 import NewChemicalForm from './NewChemicalForm';
+import ChemicalInput from "./ChemicalInput";
 import data51 from './mock/data51';
 import data52 from './mock/data52';
-import { PlusOutlined } from '@ant-design/icons';
-import ChemicalInput from "./ChemicalInput";
 
 const { TabPane } = Tabs;
 
@@ -166,7 +166,7 @@ const { TabPane } = Tabs;
   "yiran": "string"3
 }
  */
-export default class ChemicalManage extends React.Component{
+export default class ChemicalManage extends React.Component {
     newTabIndex = 0;
 
     state = {

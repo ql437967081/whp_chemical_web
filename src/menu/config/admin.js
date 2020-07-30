@@ -75,6 +75,10 @@ const menuList = [
     {
         title: '化学品数据管理',
         key: `${baseKey}/chemical_manage`
+    },
+    {
+        title: '报警信息管理',
+        key: `${baseKey}/alarm_manage`
     }
 ];
 
