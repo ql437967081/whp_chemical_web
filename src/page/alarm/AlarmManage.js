@@ -1,10 +1,7 @@
 import React from 'react';
 import { List, Space, Typography } from 'antd';
+import SearchList from './SearchList';
 import DetailDrawer from './DetailDrawer';
-import { axios, handleFailure } from '../../http_request/default';
-import { getAlarmListUrl } from '../../http_request/url';
-
-const { Link, Paragraph, Title } = Typography;
 
 export default class AlarmManage extends React.Component {
     state = {
@@ -13,59 +10,60 @@ export default class AlarmManage extends React.Component {
         drawerData: null
     };
 
-    componentDidMount() {
-        const handleSuccess = response => {
-            console.log(response);
-            this.setState({
-                alarmList: response.data['data']
-            });
-        };
-        axios.get(getAlarmListUrl).then(handleSuccess).catch(handleFailure);
-    }
+    setAlarmList = alarmList => this.setState({ alarmList });
+
+    renderItem = item => {
+        const { Link, Paragraph, Title } = Typography;
+
+        const { id, title, createTime } = item;
+        const time = new Date(createTime);
+        const timeStr =
+            `${time.toISOString().substr(0, 10)}
+             ${time.toTimeString().substr(0, 8)}`;
+
+        return (
+            <List.Item
+                key={id}
+                actions={[
+                    <Link
+                        key={`Link-${id}`}
+                        onClick={() => this.setState({ drawerVisible: true, drawerData: item })}
+                    >
+                        查看详情
+                    </Link>
+                ]}
+            >
+                <Typography>
+                    <Title level={4}>{title}</Title>
+                    <Paragraph>
+                        {timeStr}
+                    </Paragraph>
+                </Typography>
+            </List.Item>
+        );
+    };
+
+    closeDrawer = () => this.setState({ drawerVisible: false });
 
     render() {
         const { alarmList, drawerVisible, drawerData } = this.state;
-        const renderItem = item => {
-            const { id, title, createTime } = item;
-            const time = new Date(createTime);
-            const timeStr =
-                `${time.toISOString().substr(0, 10)}
-                 ${time.toTimeString().substr(0, 8)}`;
-            return (
-                <List.Item
-                    key={id}
-                    actions={[
-                        <Link
-                            key={`Link-${id}`}
-                            onClick={() => this.setState({ drawerVisible: true, drawerData: item })}
-                        >
-                            查看详情
-                        </Link>
-                    ]}
-                >
-                    <Typography>
-                        <Title level={4}>{title}</Title>
-                        <Paragraph>
-                            {timeStr}
-                        </Paragraph>
-                    </Typography>
-                </List.Item>
-            );
-        };
+
         return (
             <>
-                <Space direction={"vertical"}>
+                <Space direction={"vertical"} style={{ width: '100%' }}>
+                    <SearchList setAlarmList={this.setAlarmList} />
                     <List
                         dataSource={alarmList}
                         bordered
-                        renderItem={renderItem}
-                    />
-                    <DetailDrawer
-                        visible={drawerVisible}
-                        onClose={() => this.setState({ drawerVisible: false })}
-                        data={drawerData}
+                        renderItem={this.renderItem}
+                        locale={{ emptyText: '没有符合条件的报警信息' }}
                     />
                 </Space>
+                <DetailDrawer
+                    visible={drawerVisible}
+                    onClose={this.closeDrawer}
+                    data={drawerData}
+                />
             </>
         );
     }

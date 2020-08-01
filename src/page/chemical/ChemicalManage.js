@@ -221,13 +221,18 @@ export default class ChemicalManage extends React.Component {
 
     render() {
         const { panes, activeKey } = this.state;
+        const searchLayout = { xs: 24, md: 10 };
+        const addLayout = { xs: 24, md: 14 };
         return (
-            <Space direction={"vertical"}>
+            <Space direction={"vertical"} style={{ width: '100%' }}>
                 <Row gutter={[8, 8]}>
-                    <Col {...{ xs: 24, md: 10 }}>
-                        <ChemicalInput showDetail={this.showDetail} />
+                    <Col {...searchLayout}>
+                        <ChemicalInput
+                            onSelect={this.showDetail}
+                            placeholder={'输入化学品的CAS号或名称进行查询'}
+                        />
                     </Col>
-                    <Col {...{ xs: 24, md: { offset: 8, span: 6 } }} style={{ textAlign: 'right' }}>
+                    <Col {...addLayout} style={{ textAlign: 'right' }}>
                         <Button type={"primary"} onClick={this.add} icon={<PlusOutlined />}>新增</Button>
                     </Col>
                 </Row>

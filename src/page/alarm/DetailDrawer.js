@@ -8,10 +8,12 @@ export default function DetailDrawer(props) {
 
     const _setMarker = (classMap, windowMap, position) => {
         const { latitude, longitude } = position;
-        const marker = new windowMap.Marker({
+        const { Marker, LatLng, MarkerAnimation } = windowMap;
+        const { DROP } = MarkerAnimation;
+        const marker = new Marker({
             map: classMap,
-            position: new windowMap.LatLng(latitude, longitude),
-            animation: windowMap.MarkerAnimation.DROP,
+            position: new LatLng(latitude, longitude),
+            animation: DROP,
         });
         console.log(marker);
     };

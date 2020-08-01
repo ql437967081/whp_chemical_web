@@ -57,7 +57,7 @@ export default function ChemicalInput(props) {
     const onSelect = data => {
         console.log('onSelect', data);
         const id = parseInt(data);
-        props.showDetail(options.find(chemical => chemical.id === id));
+        props.onSelect(options.find(chemical => chemical.id === id));
         setValue('');
     };
 
@@ -74,7 +74,7 @@ export default function ChemicalInput(props) {
             onSelect={onSelect}
             onSearch={onSearch}
             onChange={onChange}
-            placeholder={'输入化学品的CAS号或名称进行查询'}
+            placeholder={props.placeholder}
         >
             {options.map(chemical => {
                 const { id, cnName, cas, formula } = chemical;
