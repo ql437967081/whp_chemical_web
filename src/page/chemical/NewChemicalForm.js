@@ -202,15 +202,16 @@ export default function NewChemicalForm(props) {
             title: '是否确认提交并生成二维码？',
             icon: <ExclamationCircleOutlined />,
             onOk() {
-                return axios.post(addChemicalUrl, addChemicalVO)
+                const { post } = axios;
+                return post(addChemicalUrl, addChemicalVO)
                     .then(function (response) {
                         console.log(response.data);
-                        return axios.post(genQrCodeUrl, { cas });
+                        return post(genQrCodeUrl, { cas });
                     })
                     .then(function (response) {
                         console.log(response.data);
                         message.success(`化学品 ${cnName} 添加成功！`);
-                        return axios.post(getChemicalDetailUrl, { cas });
+                        return post(getChemicalDetailUrl, { cas });
                     })
                     .then(function (response) {
                         const { onAdditionSuccess } = props;

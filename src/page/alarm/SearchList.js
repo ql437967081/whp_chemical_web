@@ -40,7 +40,12 @@ export default class SearchList extends React.Component {
     };
 
     render() {
+        const { refresh } = this.props;
         const { radioValue } = this.state;
+        if (refresh) {
+            this.setState({ radioValue: 1 });
+            this.getList();
+        }
         const searchLayout = { xs: 24, xl: 8 };
         const radioLayout = { xs: 24, xl: radioValue === 1 ? { offset: 8, span: 16 } : 16 };
         return (
