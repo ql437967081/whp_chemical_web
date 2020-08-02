@@ -1,11 +1,9 @@
 import React from 'react';
 import { Button, Col, Row, Space, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import ChemicalInput from './ChemicalInput';
 import DataPresentation from './DataPresentation';
 import NewChemicalForm from './NewChemicalForm';
-import ChemicalInput from "./ChemicalInput";
-import data51 from './mock/data51';
-import data52 from './mock/data52';
 
 const { TabPane } = Tabs;
 
@@ -170,22 +168,26 @@ export default class ChemicalManage extends React.Component {
     newTabIndex = 0;
 
     state = {
-        panes: [
-            { title: '镉[非发火的]', content: <DataPresentation data={data51} />, key: '51' },
-            { title: '1,2-二甲苯', content: <DataPresentation data={data52} />, key: '52' },
-        ],
-        activeKey: '51'
+        panes: []
     };
 
     showDetail = data => {
         const { panes } = this.state;
         const { id, cnName } = data;
         const activeKey = `${id}`;
+        const newPane = { title: cnName, content: <DataPresentation data={data} />, key: activeKey };
         if (panes.find(pane => pane.key === activeKey)) {
-            this.setState({ activeKey });
+            const newPanes = [];
+            panes.forEach(pane => newPanes.push(pane.key === activeKey ? newPane : pane));
+            this.setState({
+                panes: newPanes,
+                activeKey
+            });
         } else {
-            panes.push({ title: cnName, content: <DataPresentation data={data} />, key: activeKey });
-            this.setState({ panes, activeKey });
+            this.setState({
+                panes: panes.concat(newPane),
+                activeKey
+            });
         }
     };
 
@@ -198,10 +200,26 @@ export default class ChemicalManage extends React.Component {
     };
 
     add = () => {
-        const { panes } = this.state;
         const activeKey = `newTab${this.newTabIndex++}`;
-        panes.push({ title: `新增化学品 ${this.newTabIndex}`, content: <NewChemicalForm />, key: activeKey });
-        this.setState({ panes, activeKey });
+        const content = (
+            <NewChemicalForm
+                onAdditionSuccess={data => {
+                    const { id, cnName } = data;
+                    const newActiveKey = `${id}`;
+                    const newPane = { title: cnName, content: <DataPresentation data={data} />, key: newActiveKey };
+                    const newPanes = [];
+                    this.state.panes.forEach(pane => newPanes.push(pane.key === activeKey ? newPane : pane));
+                    this.setState({
+                        panes: newPanes,
+                        activeKey: newActiveKey
+                    });
+                }}
+            />
+        );
+        this.setState({
+            panes: this.state.panes.concat({ title: `新增化学品 ${this.newTabIndex}`, content, key: activeKey }),
+            activeKey
+        });
     };
 
     remove = targetKey => {

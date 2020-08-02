@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { AutoComplete } from 'antd';
+import data51 from './mock/data51';
+import data52 from './mock/data52';
 import { axios, handleFailure } from '../../http_request/default';
 import { getChemicalsUrl } from '../../http_request/url';
 
@@ -44,7 +46,7 @@ const fetch = (value, callback) => {
 
 export default function ChemicalInput(props) {
     const [value, setValue] = useState('');
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState([ data51, data52 ]);
 
     const onSearch = value => {
         if (value) {

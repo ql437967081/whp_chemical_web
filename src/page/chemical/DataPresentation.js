@@ -6,8 +6,6 @@ const { Panel } = Collapse;
 const { collapseHeaderConfig } = cfg;
 
 export default class DataPresentation extends React.Component {
-    config = [];
-
     processDescriptions = (descriptionsConfig, index) => {
         const { Item } = Descriptions;
         this.config.push({
@@ -153,6 +151,7 @@ export default class DataPresentation extends React.Component {
     };
 
     processData = () => {
+        this.config = [];
         this.processBasic();
         this.processEmergency();
         this.processPhysicalChemicalProperties();

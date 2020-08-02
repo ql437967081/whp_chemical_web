@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Checkbox, Col, Collapse, Form, Input, Row, Space } from 'antd';
+import { Button, Checkbox, Col, Collapse, Form, Input, message, Modal, Row, Space } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import * as cfg from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
-import { addChemicalUrl } from '../../http_request/url';
+import { addChemicalUrl, genQrCodeUrl, getChemicalDetailUrl } from '../../http_request/url';
 
 const { Panel } = Collapse;
 const { collapseHeaderConfigForAddition } = cfg;
@@ -176,22 +177,49 @@ const processData = config => {
     processBook(config);
 };
 
-export default function NewChemicalForm() {
-    const onFinish = values => {
-        console.log('Received values of form: ', values);
-        const { other } = values;
+export default function NewChemicalForm(props) {
+    const processChemicalValue = value => {
+        const { other } = value;
         const addChemicalVO = {
-            ...values,
+            ...value,
             other: other ? other.sort().join('|') : other,
         };
         for (let book of cfg.bookConfig) {
             const bookKey = book.key;
-            addChemicalVO[bookKey] = values[bookKey] ? 1 : 0;
+            addChemicalVO[bookKey] = value[bookKey] ? 1 : 0;
         }
+        return addChemicalVO;
+    };
+
+    const onFinish = values => {
+        console.log('Received values of form: ', values);
+
+        const addChemicalVO = processChemicalValue(values);
         console.log('Final addChemicalVO: ', addChemicalVO);
-        axios.post(addChemicalUrl, addChemicalVO).then(function (response) {
-            console.log(response);
-        }).catch(handleFailure);
+        const { cnName, cas } = addChemicalVO;
+
+        Modal.confirm({
+            title: '是否确认提交并生成二维码？',
+            icon: <ExclamationCircleOutlined />,
+            onOk() {
+                return axios.post(addChemicalUrl, addChemicalVO)
+                    .then(function (response) {
+                        console.log(response.data);
+                        return axios.post(genQrCodeUrl, { cas });
+                    })
+                    .then(function (response) {
+                        console.log(response.data);
+                        message.success(`化学品 ${cnName} 添加成功！`);
+                        return axios.post(getChemicalDetailUrl, { cas });
+                    })
+                    .then(function (response) {
+                        const { onAdditionSuccess } = props;
+                        onAdditionSuccess(response.data['data']);
+                    })
+                    .catch(handleFailure);
+            },
+            onCancel() {}
+        });
     };
 
     const config = [];
