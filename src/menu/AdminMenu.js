@@ -14,9 +14,10 @@ class AdminMenu extends React.Component {
     constructor(props) {
         super(props);
         const menuTreeNodes = this.renderMenu(menuList, true, []);
+        this.defaultOpenKeys = this.rootSubmenuKeys.length > 0 ? [this.rootSubmenuKeys[0]] : [];
         this.state = {
             selectedKey: null,
-            openKeys: [this.rootSubmenuKeys[0]],
+            openKeys: this.defaultOpenKeys,
             menuTreeNodes
         };
     }
@@ -37,7 +38,7 @@ class AdminMenu extends React.Component {
         if (pathname !== lastSelectedKey && (keyPath || lastSelectedKey)) {
             this.setState(keyPath
                 ? { selectedKey: pathname, openKeys: keyPath.slice(0, keyPath.length - 1) }
-                : { selectedKey: null, openKeys: [this.rootSubmenuKeys[0]] });
+                : { selectedKey: null, openKeys: this.defaultOpenKeys });
         }
     };
 
@@ -77,16 +78,15 @@ class AdminMenu extends React.Component {
 
     render() {
         const { openKeys, menuTreeNodes, selectedKey } = this.state;
-        const menuProps = {
-            theme: 'dark', mode: 'inline',
-            openKeys, onOpenChange: this.onOpenChange,
-            onSelect: this.onSelect
-        };
-        if (selectedKey) {
-            menuProps['selectedKeys'] = [selectedKey];
-        }
         return (
-            <Menu {...menuProps}>
+            <Menu
+                theme={"dark"}
+                mode={"inline"}
+                openKeys={openKeys}
+                onOpenChange={this.onOpenChange}
+                selectedKeys={selectedKey ? [selectedKey] : []}
+                onSelect={this.onSelect}
+            >
                 {menuTreeNodes}
             </Menu>
         );

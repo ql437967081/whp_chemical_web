@@ -16,6 +16,9 @@ export default function AdminRoute() {
             <Route path={`${basePath}/alarm_manage`}>
                 <AlarmManage />
             </Route>
+            <Route path={basePath}>
+                <Home />
+            </Route>
         </Switch>
     );
 }
@@ -23,5 +26,9 @@ export default function AdminRoute() {
 function Option() {
     let { optionId } = useParams();
     return <h3>option {optionId}</h3>;
+}
+
+function Home() {
+    return <h3>欢迎来到whp管理系统</h3>
 }
 

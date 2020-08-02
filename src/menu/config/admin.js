@@ -1,6 +1,6 @@
 const baseKey = '/admin';
 const menuList = [
-    {
+    /*{
         title: 'Navigation One',
         key: `${baseKey}/navigation1`,
         children: [
@@ -71,7 +71,7 @@ const menuList = [
                 key: `${baseKey}/option12`
             }
         ]
-    },
+    },*/
     {
         title: '化学品数据管理',
         key: `${baseKey}/chemical_manage`
