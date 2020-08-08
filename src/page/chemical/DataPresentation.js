@@ -1,11 +1,21 @@
 import React from 'react';
-import { Collapse, Descriptions, Space, Typography } from 'antd';
+import { Affix, Button, Col, Collapse, Descriptions, Row, Space, Typography } from 'antd';
+import { WarningOutlined } from '@ant-design/icons';
+import NewAlarmForm from "../alarm/NewAlarmForm";
 import * as cfg from './config/config';
 
 const { Panel } = Collapse;
 const { collapseHeaderConfig } = cfg;
 
 export default class DataPresentation extends React.Component {
+    state = {
+        newAlarmFormVisible: false
+    };
+
+    openNewAlarmForm = () => this.setState({ newAlarmFormVisible: true });
+
+    closeNewAlarmForm = () => this.setState({ newAlarmFormVisible: false });
+
     processDescriptions = (descriptionsConfig, index) => {
         const { Item } = Descriptions;
         this.config.push({
@@ -175,19 +185,42 @@ export default class DataPresentation extends React.Component {
 
     render() {
         this.processData();
+        const { id, cnName } = this.props.data;
         return (
-            <Collapse defaultActiveKey={this.config[0].key}>
-                {this.config.map(props => {
-                    const { key, header, text, disabled } = props;
-                    const panelProps = { key, header };
-                    if (disabled) { panelProps['disabled'] = true; }
-                    return (
-                        <Panel {...panelProps}>
-                            {text}
-                        </Panel>
-                    )
-                })}
-            </Collapse>
+            <>
+                <Space direction={"vertical"}>
+                    <Collapse defaultActiveKey={this.config[0].key}>
+                        {this.config.map(props => {
+                            const { key, header, text, disabled } = props;
+                            const panelProps = { key, header };
+                            if (disabled) { panelProps['disabled'] = true; }
+                            return (
+                                <Panel {...panelProps}>
+                                    {text}
+                                </Panel>
+                            )
+                        })}
+                    </Collapse>
+                    <Row>
+                        <Col span={24} style={{ textAlign: 'right' }}>
+                            <Affix offsetBottom={10}>
+                                <Button
+                                    type="primary" shape={"round"} icon={<WarningOutlined />} danger
+                                    onClick={this.openNewAlarmForm}
+                                >
+                                    报警
+                                </Button>
+                            </Affix>
+                        </Col>
+                    </Row>
+                </Space>
+                <NewAlarmForm
+                    visible={this.state.newAlarmFormVisible}
+                    onClose={this.closeNewAlarmForm}
+                    chemicalId={id}
+                    chemicalName={cnName}
+                />
+            </>
         );
     }
 }

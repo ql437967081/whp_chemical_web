@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Checkbox, Col, Collapse, Form, Input, message, Modal, Row, Space } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Affix, Button, Checkbox, Col, Collapse, Form, Input, message, Modal, Row, Space } from 'antd';
+import { CheckOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import * as cfg from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
 import { addChemicalUrl, genQrCodeUrl, getChemicalDetailUrl } from '../../http_request/url';
@@ -223,12 +223,17 @@ export default function NewChemicalForm(props) {
         });
     };
 
+    const onFinishFailed = info => {
+        console.log('Validate Failed:', info);
+        message.error(info.errorFields[0].errors[0]);
+    };
+
     const config = [];
 
     processData(config);
 
     return (
-        <Form onFinish={onFinish}>
+        <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <Space direction={"vertical"}>
                 <Collapse defaultActiveKey={collapseHeaderConfigForAddition[0].key}>
                     {config.map(props => {
@@ -244,9 +249,11 @@ export default function NewChemicalForm(props) {
                 </Collapse>
                 <Row>
                     <Col span={24} style={{ textAlign: 'right' }}>
-                        <Button type="primary" htmlType="submit">
-                            提交
-                        </Button>
+                        <Affix offsetBottom={10}>
+                            <Button type="primary" icon={<CheckOutlined />} htmlType="submit">
+                                提交
+                            </Button>
+                        </Affix>
                     </Col>
                 </Row>
             </Space>
