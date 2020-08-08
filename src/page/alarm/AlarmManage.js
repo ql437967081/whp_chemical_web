@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, message, Modal, Space, Typography } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, MehOutlined } from '@ant-design/icons';
 import SearchList from './SearchList';
 import DetailDrawer from './DetailDrawer';
 import { stateTypes } from './config';
@@ -15,7 +15,7 @@ export default class AlarmManage extends React.Component {
         drawerData: null
     };
 
-    setAlarmList = alarmList => this.setState({ refreshList: false, alarmList });
+    setAlarmList = (alarmList, callback) => this.setState({ refreshList: false, alarmList }, callback);
 
     renderItem = item => {
         const { Link, Paragraph, Title } = Typography;
@@ -82,6 +82,7 @@ export default class AlarmManage extends React.Component {
 
     render() {
         const { refreshList, alarmList, drawerVisible, drawerData } = this.state;
+        const { Title } = Typography;
 
         return (
             <>
@@ -91,7 +92,15 @@ export default class AlarmManage extends React.Component {
                         dataSource={alarmList}
                         bordered
                         renderItem={this.renderItem}
-                        locale={{ emptyText: '没有符合条件的报警信息' }}
+                        locale={{
+                            emptyText: (
+                                <>
+                                    <Title />
+                                    <Title level={4}><MehOutlined /> 没有符合条件的报警信息</Title>
+                                    <Title />
+                                </>
+                            )
+                        }}
                     />
                 </Space>
                 <DetailDrawer

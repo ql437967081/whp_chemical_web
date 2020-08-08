@@ -6,20 +6,30 @@ import { axios, handleFailure } from '../../http_request/default';
 import { getAlarmListUrl } from '../../http_request/url';
 
 export default class SearchList extends React.Component {
+    refreshing = false;
+
     state = {
         radioValue: 1
     };
 
     handleSuccess = response => {
         const { setAlarmList } = this.props;
-        setAlarmList(response.data['data']);
+        setAlarmList(response.data['data'], () => this.refreshing = false);
     };
 
     componentDidMount() {
         this.getList();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.refresh && !this.refreshing) {
+            this.setState({ radioValue: 1 });
+            this.getList();
+        }
+    }
+
     getList = () => {
+        this.refreshing = true;
         axios.get(getAlarmListUrl).then(this.handleSuccess).catch(handleFailure);
     };
 
@@ -40,12 +50,7 @@ export default class SearchList extends React.Component {
     };
 
     render() {
-        const { refresh } = this.props;
         const { radioValue } = this.state;
-        if (refresh) {
-            this.setState({ radioValue: 1 });
-            this.getList();
-        }
         const searchLayout = { xs: 24, xl: 8 };
         const radioLayout = { xs: 24, xl: radioValue === 1 ? { offset: 8, span: 16 } : 16 };
         return (
