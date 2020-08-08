@@ -42,7 +42,7 @@ export default class NewAlarmForm extends React.Component {
     }
 
     checkPosition = (rule, value) => {
-        if (value !== '[,]') {
+        if (value !== ',') {
             return Promise.resolve();
         }
 
@@ -86,11 +86,11 @@ export default class NewAlarmForm extends React.Component {
                 onCancel={onClose}
                 onOk={this.onSubmit}
                 confirmLoading={confirmLoading}
-                initialValues={{ position: '[,]' }}
             >
                 <Form
                     ref={this.formRef}
                     {...layout}
+                    initialValues={{ position: ',' }}
                 >
                     <Form.Item
                         label={'化学品名称'}

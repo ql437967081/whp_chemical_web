@@ -3,7 +3,7 @@ import { Button, Col, Input, message, Row, Space, Tooltip } from 'antd';
 import { AimOutlined, SearchOutlined } from '@ant-design/icons';
 import md5 from 'js-md5';
 import ReactQMap from 'better-react-qmap';
-import { qqMapKey, webServiceSecretKey } from './config';
+import { qqMapKey, webServiceSecretKey, defaultCenter } from './config';
 import { axios, handleFailure } from '../../http_request/default';
 import { qqMapUrl } from '../../http_request/url';
 
@@ -16,7 +16,7 @@ export default class SelectPositionMap extends React.Component {
     };
 
     formattedValue = () => {
-        return `[${this.state.latLngText}]`;
+        return this.state.latLngText;
     };
 
     triggerChange = () => {
@@ -58,7 +58,8 @@ export default class SelectPositionMap extends React.Component {
 
         const _showError = error => {
             console.log(error);
-            message.error('获取定位异常');
+            message.error('此浏览器获取定位异常，建议使用Firefox浏览器');
+            this.setState({ center: defaultCenter });
         };
 
         if ('geolocation' in navigator) {
@@ -256,7 +257,7 @@ export default class SelectPositionMap extends React.Component {
                             />
                         </Col>
                         <Col span={4} style={{ textAlign: 'right' }}>
-                            <Tooltip title={'回到当前位置'}>
+                            <Tooltip title={'回到初始位置'}>
                                 <Button
                                     shape={"circle"} icon={<AimOutlined />}
                                     onClick={this.backToCurrentPosition}
