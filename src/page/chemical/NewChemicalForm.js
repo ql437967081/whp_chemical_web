@@ -184,10 +184,16 @@ export default function NewChemicalForm(props) {
             ...value,
             other: other ? other.sort().join('|') : other,
         };
+
+        for (let propName in addChemicalVO) {
+            if (!addChemicalVO[propName]) addChemicalVO[propName] = null;
+        }
+
         for (let book of cfg.bookConfig) {
             const bookKey = book.key;
             addChemicalVO[bookKey] = value[bookKey] ? 1 : 0;
         }
+
         return addChemicalVO;
     };
 

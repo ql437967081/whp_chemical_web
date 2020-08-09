@@ -57,7 +57,17 @@ export default class NewAlarmForm extends React.Component {
         validateFields()
             .then(values => {
                 resetFields();
-                axios.post(addAlarmUrl, { ...values, chemicalId })
+                const data = { ...values, chemicalId };
+
+                const setNullIfUndefined = (propName, nullValue) => {
+                    if (!data[propName]) data[propName] = nullValue;
+                };
+                setNullIfUndefined('type', 0);
+                setNullIfUndefined('contact', null);
+                setNullIfUndefined('remarks', null);
+                console.log(data);
+
+                axios.post(addAlarmUrl, data)
                     .then(function (response) {
                         console.log(response);
                         onConfirmFinish();
