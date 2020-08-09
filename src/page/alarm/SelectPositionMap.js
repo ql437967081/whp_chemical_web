@@ -185,7 +185,7 @@ export default class SelectPositionMap extends React.Component {
             });
         };
 
-        let interval;
+        let interval, triesCount = 0;
 
         const fake = () => {
             console.log('Trying to acquire place...');
@@ -196,6 +196,10 @@ export default class SelectPositionMap extends React.Component {
 
                 clearInterval(interval);
                 console.log('Interval cleared.');
+            } else if (triesCount++ > 40) {
+                clearInterval(interval);
+                console.log('Interval cleared because of timeout.');
+                message.error('网络波动，建议重新刷新页面！');
             }
         };
 
