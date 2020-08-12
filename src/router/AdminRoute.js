@@ -29,6 +29,6 @@ function Option() {
 }
 
 function Home() {
-    return <h3>欢迎来到whp管理系统</h3>
+    return <h3>欢迎来到 whp 管理系统</h3>
 }
 

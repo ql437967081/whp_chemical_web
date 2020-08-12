@@ -3,9 +3,7 @@ import { Descriptions, Drawer } from 'antd';
 import ReactQMap from 'better-react-qmap';
 import { stateTypes, qqMapKey } from './config';
 
-export default function DetailDrawer(props) {
-    const { visible, onClose, data }= props;
-
+export default function DetailDrawer({ visible, onClose, data }) {
     const _setMarker = (classMap, windowMap, position) => {
         const { latitude, longitude } = position;
         const { Marker, LatLng, MarkerAnimation } = windowMap;

@@ -1,34 +1,25 @@
 import React from 'react';
-import { HashRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
-import Admin from "../user/Admin";
-import AdminRoute from "./AdminRoute";
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
+import Login from '../user/Login';
+import Admin from '../user/Admin';
+import AuthRoute from './AuthRoute';
+import AdminRoute from './AdminRoute';
+import { adminNickName } from './config';
 
 export default function Router() {
     return (
         <HashRouter>
-            <div>
-                <Switch>
-                    <Route path={'/admin'}>
-                        <Admin>
-                            <AdminRoute />
-                        </Admin>
-                    </Route>
-                    <Route path={'/login'}>
-                        <Login />
-                    </Route>
-                    <Redirect to={'/login'} />
-                </Switch>
-            </div>
+            <Switch>
+                <AuthRoute path={'/admin'} nickname={adminNickName}>
+                    <Admin>
+                        <AdminRoute />
+                    </Admin>
+                </AuthRoute>
+                <Route path={'/login'}>
+                    <Login />
+                </Route>
+                <Redirect to={'/login'} />
+            </Switch>
         </HashRouter>
-    );
-}
-
-function Login() {
-    return (
-        <ul>
-            <li>
-                <Link to={'/admin'}>管理员登录</Link>
-            </li>
-        </ul>
     );
 }

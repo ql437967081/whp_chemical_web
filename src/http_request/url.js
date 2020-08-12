@@ -2,6 +2,8 @@ const backendUrl = '/api';
 
 const baseUrl = `${backendUrl}/whp`;
 
+const loginUrl = `${baseUrl}/manager/login`;
+
 const chemicalUrl = `${baseUrl}/chemical`;
 const alarmUrl = `${baseUrl}/alarm`;
 
@@ -19,7 +21,7 @@ const addAlarmUrl = `${alarmUrl}/add`;
 const qqMapUrl = '/qq-map-api';
 
 export {
-    backendUrl,
+    backendUrl, loginUrl,
     addChemicalUrl, getChemicalsUrl, genQrCodeUrl, getChemicalDetailUrl,
     getAlarmListUrl, deleteAlarmUrl, getAlarmTypesUrl, addAlarmUrl,
     qqMapUrl

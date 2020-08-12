@@ -177,7 +177,7 @@ const processData = config => {
     processBook(config);
 };
 
-export default function NewChemicalForm(props) {
+export default function NewChemicalForm({ onAdditionSuccess }) {
     const processChemicalValue = value => {
         const { other } = value;
         const addChemicalVO = {
@@ -220,7 +220,6 @@ export default function NewChemicalForm(props) {
                         return post(getChemicalDetailUrl, { cas });
                     })
                     .then(function (response) {
-                        const { onAdditionSuccess } = props;
                         onAdditionSuccess(response.data['data']);
                     })
                     .catch(handleFailure);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Affix, Button, Col, Collapse, Descriptions, Row, Space, Typography } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
-import NewAlarmForm from "../alarm/NewAlarmForm";
+import NewAlarmForm from '../alarm/NewAlarmForm';
 import * as cfg from './config/config';
 import { backendUrl } from '../../http_request/url'
 
@@ -88,10 +88,9 @@ export default class DataPresentation extends React.Component {
         const label = '二维码';
         descriptionsItems.push(
             <Item label={label} key={'uri'}>
-                <div style={{ display: "inline-block", verticalAlign: "middle" }}>
-                    <span />
+                <Space align={"center"}>
                     <img src={`${backendUrl}${uri}`} alt={`${cnName}${label}`} width={100} height={100} />
-                </div>
+                </Space>
             </Item>
         );
         this.config.push({

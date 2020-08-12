@@ -3,6 +3,7 @@ import { Breadcrumb, Layout, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import { LogoutOutlined } from '@ant-design/icons';
 import AdminMenu from '../menu/AdminMenu';
+import { logout } from '../router/config';
 import './Admin.css';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -44,12 +45,15 @@ export default class Admin extends React.Component {
                 </Sider>
                 <Layout className="site-layout" style={{ marginLeft: 200 }}>
                     <Header className="site-layout-background" style={{ padding: 0 }}>
-                        <Link to={'/login'} style={{ float: 'right', marginRight: 50 }}>
-                            <Space>
-                                <LogoutOutlined />
-                                退出
-                            </Space>
-                        </Link>
+                        <Space size={"large"} style={{ float: 'right', marginRight: 50 }}>
+                            {`${sessionStorage.getItem('nickname')}：${sessionStorage.getItem('username')}`}
+                            <Link to={'/login'} onClick={() => logout()}>
+                                <Space>
+                                    <LogoutOutlined />
+                                    登出
+                                </Space>
+                            </Link>
+                        </Space>
                     </Header>
                     <Content style={{ margin: '0 16px' }}>
                         <Breadcrumb style={{ margin: '16px 0' }}>
