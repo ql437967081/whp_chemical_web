@@ -16,6 +16,7 @@ const getAlarmListUrl = `${alarmUrl}/getList`;
 const deleteAlarmUrl = `${alarmUrl}/del`;
 const getAlarmTypesUrl = `${alarmUrl}/getTypes`;
 const addAlarmUrl = `${alarmUrl}/add`;
+const handleAlarmUrl = `${alarmUrl}/handle`;
 
 
 const qqMapUrl = '/qq-map-api';
@@ -23,6 +24,6 @@ const qqMapUrl = '/qq-map-api';
 export {
     backendUrl, loginUrl,
     addChemicalUrl, getChemicalsUrl, genQrCodeUrl, getChemicalDetailUrl,
-    getAlarmListUrl, deleteAlarmUrl, getAlarmTypesUrl, addAlarmUrl,
+    getAlarmListUrl, deleteAlarmUrl, getAlarmTypesUrl, addAlarmUrl, handleAlarmUrl,
     qqMapUrl
 };

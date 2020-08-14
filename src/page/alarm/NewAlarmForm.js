@@ -20,7 +20,7 @@ const requiredRules = label => {
 
 export default class NewAlarmForm extends React.Component {
     state = {
-        confirmLoading: false
+        typeOptions: []
     };
 
     formRef = React.createRef();
@@ -50,34 +50,36 @@ export default class NewAlarmForm extends React.Component {
     };
 
     onSubmit = () => {
-        this.setState({ confirmLoading: true });
-        const onConfirmFinish = () => this.setState({ confirmLoading: false });
         const { validateFields, resetFields } = this.formRef.current;
         const { chemicalId, onClose } = this.props;
         validateFields()
             .then(values => {
-                resetFields();
-                const data = { ...values, chemicalId };
+                Modal.confirm({
+                    title: `是否确认提交报警：${values['title']}？`,
+                    onOk() {
+                        resetFields();
+                        const data = { ...values, chemicalId };
 
-                const setNullIfUndefined = (propName, nullValue) => {
-                    if (!data[propName]) data[propName] = nullValue;
-                };
-                setNullIfUndefined('type', 0);
-                setNullIfUndefined('contact', null);
-                setNullIfUndefined('remarks', null);
-                console.log(data);
+                        const setNullIfUndefined = (propName, nullValue) => {
+                            if (!data[propName]) data[propName] = nullValue;
+                        };
+                        setNullIfUndefined('type', 0);
+                        setNullIfUndefined('contact', null);
+                        setNullIfUndefined('remarks', null);
+                        console.log(data);
 
-                axios.post(addAlarmUrl, data)
-                    .then(function (response) {
-                        console.log(response);
-                        onConfirmFinish();
-                        onClose();
-                        message.success('报警成功！');
-                    })
-                    .catch(handleFailure);
+                        return axios.post(addAlarmUrl, data)
+                            .then(function (response) {
+                                console.log(response);
+                                onClose();
+                                message.success('报警成功！');
+                            })
+                            .catch(handleFailure);
+                    },
+                    onCancel() {}
+                });
             })
             .catch(info => {
-                onConfirmFinish();
                 console.log('Validate Failed:', info);
                 message.error(info.errorFields[0].errors[0]);
             });
@@ -85,7 +87,7 @@ export default class NewAlarmForm extends React.Component {
 
     render() {
         const { visible, onClose, chemicalName } = this.props;
-        const { confirmLoading, typeOptions } = this.state;
+        const { typeOptions } = this.state;
         return (
             <Modal
                 centered
@@ -95,7 +97,6 @@ export default class NewAlarmForm extends React.Component {
                 cancelText={'取消'}
                 onCancel={onClose}
                 onOk={this.onSubmit}
-                confirmLoading={confirmLoading}
             >
                 <Form
                     ref={this.formRef}

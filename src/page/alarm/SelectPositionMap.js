@@ -199,7 +199,7 @@ export default class SelectPositionMap extends React.Component {
             } else if (triesCount++ > 40) {
                 clearInterval(interval);
                 console.log('Interval cleared because of timeout.');
-                message.error('网络波动，建议重新刷新页面！');
+                message.error('网络波动，为了更好地使用位置搜索功能，建议重新刷新页面！');
             }
         };
 

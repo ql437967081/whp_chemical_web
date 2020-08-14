@@ -1,6 +1,6 @@
 import React from 'react';
 import { Affix, Button, Checkbox, Col, Collapse, Form, Input, message, Modal, Row, Space } from 'antd';
-import { CheckOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { CheckOutlined } from '@ant-design/icons';
 import * as cfg from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
 import { addChemicalUrl, genQrCodeUrl, getChemicalDetailUrl } from '../../http_request/url';
@@ -206,7 +206,6 @@ export default function NewChemicalForm({ onAdditionSuccess }) {
 
         Modal.confirm({
             title: '是否确认提交并生成二维码？',
-            icon: <ExclamationCircleOutlined />,
             onOk() {
                 const { post } = axios;
                 return post(addChemicalUrl, addChemicalVO)
