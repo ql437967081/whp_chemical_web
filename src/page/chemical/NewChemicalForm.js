@@ -251,8 +251,9 @@ export default function NewChemicalForm({ onAdditionSuccess }) {
                         );
                     })}
                 </Collapse>
-                <Row>
-                    <Col span={24} style={{ textAlign: 'right' }}>
+                <Row justify="space-between">
+                    <Col />
+                    <Col>
                         <Affix offsetBottom={10}>
                             <Button type="primary" icon={<CheckOutlined />} htmlType="submit">
                                 提交

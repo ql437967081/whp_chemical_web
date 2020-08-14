@@ -51,12 +51,13 @@ export default class SearchList extends React.Component {
 
     render() {
         const { radioValue } = this.state;
-        const searchLayout = { xs: 24, xl: 8 };
-        const radioLayout = { xs: 24, xl: radioValue === 1 ? { offset: 8, span: 16 } : 16 };
         return (
-            <Row gutter={[8, 8]}>
+            <Row justify="space-between" gutter={[8, 8]}>
+                {radioValue === 1 && (
+                    <Col />
+                )}
                 {radioValue === 2 && (
-                    <Col {...searchLayout}>
+                    <Col>
                         <ChemicalInput
                             onSelect={this.getListByChemical}
                             placeholder={'获取特定化学品的报警信息'}
@@ -64,7 +65,7 @@ export default class SearchList extends React.Component {
                     </Col>
                 )}
                 {radioValue === 3 && (
-                    <Col {...searchLayout}>
+                    <Col>
                         <Select
                             onChange={this.getListByState}
                             style={{ width: 120 }}
@@ -81,7 +82,7 @@ export default class SearchList extends React.Component {
                         </Select>
                     </Col>
                 )}
-                <Col {...radioLayout} style={{ textAlign: 'right' }}>
+                <Col>
                     <Radio.Group
                         value={radioValue}
                         onChange={e => {

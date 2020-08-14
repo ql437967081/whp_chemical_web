@@ -201,8 +201,9 @@ export default class DataPresentation extends React.Component {
                             )
                         })}
                     </Collapse>
-                    <Row>
-                        <Col span={24} style={{ textAlign: 'right' }}>
+                    <Row justify="space-between">
+                        <Col />
+                        <Col>
                             <Affix offsetBottom={10}>
                                 <Button
                                     type="primary" shape={"round"} icon={<WarningOutlined />} danger

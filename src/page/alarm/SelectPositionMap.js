@@ -244,15 +244,18 @@ export default class SelectPositionMap extends React.Component {
                         style={{ width: 320, height: 320 }}
                     />
                     <Row>
-                        <Col span={24}>
+                        <Col>
                             {searchResultText}
                         </Col>
-                        <Col span={24} style={{ textAlign: 'right' }}>
+                    </Row>
+                    <Row justify="space-between">
+                        <Col />
+                        <Col>
                             {this.formattedValue()}
                         </Col>
                     </Row>
-                    <Row>
-                        <Col span={20}>
+                    <Row justify="space-between">
+                        <Col>
                             <Input
                                 id={'place'}
                                 onChange={this.onChange}
@@ -260,7 +263,7 @@ export default class SelectPositionMap extends React.Component {
                                 allowClear
                             />
                         </Col>
-                        <Col span={4} style={{ textAlign: 'right' }}>
+                        <Col>
                             <Tooltip title={'回到初始位置'}>
                                 <Button
                                     shape={"circle"} icon={<AimOutlined />}
