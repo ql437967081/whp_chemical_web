@@ -32,15 +32,14 @@ export default class SelectPositionMap extends React.Component {
     };
 
     geocoder = () => {
-        const requestPath = '/ws/geocoder/v1';
         const { lat, lng } = this.currentCenter;
         const location = `${lat},${lng}`;
         const setNameAndAddress = this.setNameAndAddress;
-        axios.get(`${qqMapUrl}${requestPath}`, {
+        axios.get(qqMapUrl, {
             params: {
                 key: qqMapKey,
                 location,
-                sig: md5(`${requestPath}?key=${qqMapKey}&location=${location}${webServiceSecretKey}`)
+                sig: md5(`${qqMapUrl}?key=${qqMapKey}&location=${location}${webServiceSecretKey}`)
             }
         }).then(function (response) {
             const { address, formatted_addresses } = response.data['result'];
@@ -58,7 +57,7 @@ export default class SelectPositionMap extends React.Component {
 
         const _showError = error => {
             console.log(error);
-            message.error('此浏览器获取定位异常，建议使用Firefox浏览器');
+            message.error(`定位获取异常：${error.message}`);
             this.setState({ center: defaultCenter });
         };
 

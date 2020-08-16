@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Col, Form, Input, Layout, message, Row } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom';
@@ -15,10 +15,14 @@ const setItems = data => {
 };
 
 function Login({ history }) {
+    const [ loading, setLoading ] = useState(false);
+
     const onFinish = values => {
         console.log('Received values of form: ', values);
+        setLoading(true);
         axios.post(loginUrl, values)
             .then(function (response) {
+                setLoading(false);
                 const { data } = response.data;
                 const { managerId } = data;
                 if (!managerId) {
@@ -55,7 +59,7 @@ function Login({ history }) {
                                     />
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button type="primary" htmlType="submit" block>
+                                    <Button type="primary" htmlType="submit" block loading={loading}>
                                         登录
                                     </Button>
                                 </Form.Item>

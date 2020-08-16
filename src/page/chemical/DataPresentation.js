@@ -3,8 +3,6 @@ import { Affix, Button, Col, Collapse, Descriptions, Row, Space, Typography } fr
 import { WarningOutlined } from '@ant-design/icons';
 import NewAlarmForm from '../alarm/NewAlarmForm';
 import * as cfg from './config/config';
-import { backendUrl } from '../../http_request/url'
-
 const { Panel } = Collapse;
 const { collapseHeaderConfig } = cfg;
 
@@ -89,7 +87,7 @@ export default class DataPresentation extends React.Component {
         descriptionsItems.push(
             <Item label={label} key={'uri'}>
                 <Space align={"center"}>
-                    <img src={`${backendUrl}${uri}`} alt={`${cnName}${label}`} width={100} height={100} />
+                    <img src={uri} alt={`${cnName}${label}`} width={100} height={100} />
                 </Space>
             </Item>
         );

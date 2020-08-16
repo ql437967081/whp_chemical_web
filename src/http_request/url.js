@@ -1,6 +1,4 @@
-const backendUrl = '/api';
-
-const baseUrl = `${backendUrl}/whp`;
+const baseUrl = '/whp';
 
 const loginUrl = `${baseUrl}/manager/login`;
 
@@ -19,10 +17,10 @@ const addAlarmUrl = `${alarmUrl}/add`;
 const handleAlarmUrl = `${alarmUrl}/handle`;
 
 
-const qqMapUrl = '/qq-map-api';
+const qqMapUrl = '/ws/geocoder/v1';
 
 export {
-    backendUrl, loginUrl,
+    loginUrl,
     addChemicalUrl, getChemicalsUrl, genQrCodeUrl, getChemicalDetailUrl,
     getAlarmListUrl, deleteAlarmUrl, getAlarmTypesUrl, addAlarmUrl, handleAlarmUrl,
     qqMapUrl
