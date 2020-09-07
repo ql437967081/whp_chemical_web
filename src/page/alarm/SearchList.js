@@ -71,12 +71,12 @@ export default class SearchList extends React.Component {
                             style={{ width: 120 }}
                             placeholder={'请选择状态'}
                         >
-                            {stateTypes.map((stateName, index) => {
+                            {stateTypes.map((stateType, index) => {
                                 if (index === 0)
                                     return null;
                                 const { Option } = Select;
                                 return (
-                                    <Option value={index} key={index}>{stateName}</Option>
+                                    <Option value={index} key={index}>{stateType.name}</Option>
                                 );
                             })}
                         </Select>
