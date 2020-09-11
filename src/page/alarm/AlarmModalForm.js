@@ -1,8 +1,9 @@
 import React from 'react';
 import { message, Modal, Form, Input, Select } from 'antd';
 import SelectPositionMap  from './SelectPositionMap';
+import { nullPos } from './config';
 import { axios, handleFailure } from '../../http_request/default';
-import { getAlarmTypesUrl, addAlarmUrl } from '../../http_request/url';
+import { getAlarmTypesUrl } from '../../http_request/url';
 
 const layout = {
     labelCol: { span: 6 },
@@ -18,15 +19,22 @@ const requiredRules = label => {
     ];
 };
 
-export default class NewAlarmForm extends React.Component {
+export default class AlarmModalForm extends React.Component {
     state = {
-        typeOptions: []
+        typeOptions: [],
+        initType: undefined
     };
 
     formRef = React.createRef();
 
     componentDidMount() {
         const setTypeOptions = typeOptions => this.setState({ typeOptions });
+        const setInitType = (type, typeName) => {
+            const { data, onEdit } = this.props;
+            if (onEdit && typeName === data['type']) {
+                this.setState({ initType: type })
+            }
+        };
         axios.get(getAlarmTypesUrl)
             .then(function (response) {
                 const typeOptions = [];
@@ -34,6 +42,7 @@ export default class NewAlarmForm extends React.Component {
                 const { Option } = Select;
                 for (let typeName in data) {
                     const type = data[typeName];
+                    setInitType(type, typeName);
                     typeOptions.push(<Option value={type} key={type}>{typeName}</Option>);
                 }
                 setTypeOptions(typeOptions);
@@ -51,33 +60,21 @@ export default class NewAlarmForm extends React.Component {
 
     onSubmit = () => {
         const { validateFields, resetFields } = this.formRef.current;
-        const { chemicalId, onClose } = this.props;
+        const { onValidate } = this.props;
+
+        const processData = data => {
+            const setNullIfUndefined = (propName, nullValue) => {
+                if (!data[propName]) data[propName] = nullValue;
+            };
+            setNullIfUndefined('type', 0);
+            setNullIfUndefined('contact', null);
+            setNullIfUndefined('remarks', null);
+            console.log(data);
+        };
+
         validateFields()
             .then(values => {
-                Modal.confirm({
-                    title: `是否确认提交报警：${values['title']}？`,
-                    onOk() {
-                        resetFields();
-                        const data = { ...values, chemicalId };
-
-                        const setNullIfUndefined = (propName, nullValue) => {
-                            if (!data[propName]) data[propName] = nullValue;
-                        };
-                        setNullIfUndefined('type', 0);
-                        setNullIfUndefined('contact', null);
-                        setNullIfUndefined('remarks', null);
-                        console.log(data);
-
-                        return axios.post(addAlarmUrl, data)
-                            .then(function (response) {
-                                console.log(response);
-                                onClose();
-                                message.success('报警成功！');
-                            })
-                            .catch(handleFailure);
-                    },
-                    onCancel() {}
-                });
+                onValidate(values, resetFields, processData);
             })
             .catch(info => {
                 console.log('Validate Failed:', info);
@@ -86,13 +83,22 @@ export default class NewAlarmForm extends React.Component {
     };
 
     render() {
-        const { visible, onClose, chemicalName } = this.props;
-        const { typeOptions } = this.state;
+        const { visible, onClose, data, onEdit, modalTitle } = this.props;
+
+        const { chemicalName, username, contact, title, position, address, remarks } = data;
+
+        const { typeOptions, initType } = this.state;
+
+        console.log('onEdit:', onEdit);
+        const initialValues = onEdit
+            ? { username, contact, title, type: initType, position, address, remarks }
+            : { position: nullPos };
+
         return (
             <Modal
                 centered
                 visible={visible}
-                title={'报警'}
+                title={modalTitle}
                 okText={'提交'}
                 cancelText={'取消'}
                 onCancel={onClose}
@@ -101,7 +107,7 @@ export default class NewAlarmForm extends React.Component {
                 <Form
                     ref={this.formRef}
                     {...layout}
-                    initialValues={{ position: ',' }}
+                    initialValues={initialValues}
                 >
                     <Form.Item
                         label={'化学品名称'}

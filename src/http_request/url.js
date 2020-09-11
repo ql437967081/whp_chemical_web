@@ -15,6 +15,7 @@ const deleteAlarmUrl = `${alarmUrl}/del`;
 const getAlarmTypesUrl = `${alarmUrl}/getTypes`;
 const addAlarmUrl = `${alarmUrl}/add`;
 const handleAlarmUrl = `${alarmUrl}/handle`;
+const updateAlarmUrl = `${alarmUrl}/update`;
 
 
 const qqMapUrl = '/ws/geocoder/v1';
@@ -22,6 +23,6 @@ const qqMapUrl = '/ws/geocoder/v1';
 export {
     loginUrl,
     addChemicalUrl, getChemicalsUrl, genQrCodeUrl, getChemicalDetailUrl,
-    getAlarmListUrl, deleteAlarmUrl, getAlarmTypesUrl, addAlarmUrl, handleAlarmUrl,
+    getAlarmListUrl, deleteAlarmUrl, getAlarmTypesUrl, addAlarmUrl, handleAlarmUrl, updateAlarmUrl,
     qqMapUrl
 };

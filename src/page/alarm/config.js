@@ -29,4 +29,13 @@ const webServiceSecretKey = '4SITQScz2lys40QRGY8PrGId6ceiyze7';
 
 const defaultCenter = { latitude: 39.9, longitude: 116.4 };
 
-export { stateTypes, qqMapKey, webServiceSecretKey, defaultCenter };
+const nullPos = ',';
+
+const parseLatLng = position => {
+    const latLng = position.split(',');
+    const latitude = parseFloat(latLng[1]);
+    const longitude = parseFloat(latLng[0]);
+    return { latitude, longitude };
+};
+
+export { stateTypes, qqMapKey, webServiceSecretKey, defaultCenter, nullPos, parseLatLng };

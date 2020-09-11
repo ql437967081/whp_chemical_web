@@ -1,16 +1,9 @@
 import React from 'react';
 import { Button, Col, Descriptions, Drawer, message, Modal, Row } from 'antd';
 import ReactQMap from 'better-react-qmap';
-import { stateTypes, qqMapKey } from './config';
+import { stateTypes, qqMapKey, parseLatLng } from './config';
 import { axios, handleFailure } from '../../http_request/default';
 import { handleAlarmUrl } from '../../http_request/url';
-
-const parseLatLng = position => {
-    const latLng = position.split(',');
-    const latitude = parseFloat(latLng[1]);
-    const longitude = parseFloat(latLng[0]);
-    return { latitude, longitude };
-};
 
 export default function DetailDrawer({ visible, onClose, data, onHandleSuccess }) {
     const _setMarker = (classMap, windowMap, position) => {

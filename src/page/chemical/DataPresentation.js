@@ -1,7 +1,7 @@
 import React from 'react';
 import { Affix, Button, Col, Collapse, Descriptions, Row, Space, Typography } from 'antd';
 import { WarningOutlined } from '@ant-design/icons';
-import NewAlarmForm from '../alarm/NewAlarmForm';
+import NewAlarm from '../alarm/NewAlarm';
 import * as cfg from './config/config';
 const { Panel } = Collapse;
 const { collapseHeaderConfig } = cfg;
@@ -213,7 +213,7 @@ export default class DataPresentation extends React.Component {
                         </Col>
                     </Row>
                 </Space>
-                <NewAlarmForm
+                <NewAlarm
                     visible={this.state.newAlarmFormVisible}
                     onClose={this.closeNewAlarmForm}
                     chemicalId={id}

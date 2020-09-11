@@ -3,7 +3,7 @@ import { Button, Col, Input, message, Row, Space, Tooltip } from 'antd';
 import { AimOutlined, SearchOutlined } from '@ant-design/icons';
 import md5 from 'js-md5';
 import ReactQMap from 'better-react-qmap';
-import { qqMapKey, webServiceSecretKey, defaultCenter } from './config';
+import { qqMapKey, webServiceSecretKey, defaultCenter, nullPos, parseLatLng } from './config';
 import { axios, handleFailure } from '../../http_request/default';
 import { qqMapUrl } from '../../http_request/url';
 
@@ -12,7 +12,7 @@ let classMap, windowMap;
 export default class SelectPositionMap extends React.Component {
     state = {
         searchResultText: '',
-        latLngText: ','
+        latLngText: nullPos
     };
 
     formattedValue = () => {
@@ -48,6 +48,17 @@ export default class SelectPositionMap extends React.Component {
     };
 
     componentDidMount() {  // 初始化为当前位置
+        const initPos = this.props.value;
+        if (initPos !== nullPos) {
+            console.log('init pos: ', initPos);
+            this.initPos = true;
+            this.setState({
+                center: parseLatLng(initPos)
+            });
+            return;
+        }
+        this.initPos = false;
+
         const _showPosition = position => {
             const { latitude, longitude } = position.coords;
             this.setState({
@@ -96,7 +107,7 @@ export default class SelectPositionMap extends React.Component {
     _initMarker = () => {  // 初始化标记
         if (!this.marker) {
             this.currentPosition = classMap.getCenter();
-            this.backToCurrentPosition();
+            this.backToCurrentPosition(!this.initPos); // 有初始位置则不搜索周边
         }
     };
 
@@ -220,9 +231,11 @@ export default class SelectPositionMap extends React.Component {
         classMap.zoomTo(14);
     };
 
-    backToCurrentPosition = () => {
+    backToCurrentPosition = (geo = true) => {
         this.jumpToPos(this.currentPosition);
-        this.geocoder();
+        if (geo) {
+            this.geocoder();
+        }
     };
 
     checkSearching = () => {

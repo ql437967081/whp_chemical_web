@@ -3,6 +3,7 @@ import { List, message, Modal, Space, Typography } from 'antd';
 import { MehOutlined } from '@ant-design/icons';
 import SearchList from './SearchList';
 import DetailDrawer from './DetailDrawer';
+import EditAlarm from './EditAlarm';
 import { stateTypes } from './config';
 import { axios, handleFailure } from '../../http_request/default';
 import { deleteAlarmUrl } from '../../http_request/url';
@@ -17,7 +18,9 @@ export default class AlarmManage extends React.Component {
         refreshList: false,
         alarmList: [],
         drawerVisible: false,
-        drawerData: null
+        drawerData: null,
+        editAlarmFormVisible: false,
+        editingData: null
     };
 
     setAlarmList = (alarmList, callback) => this.setState({ refreshList: false, alarmList }, callback);
@@ -30,6 +33,10 @@ export default class AlarmManage extends React.Component {
         const { id, title, createTime, state } = item;
 
         const showDetailDrawer = () => this.setState({ drawerVisible: true, drawerData: item });
+
+        const openEditAlarmForm = () => {
+            this.setState({ editAlarmFormVisible: true, editingData: item });
+        };
 
         const deleteAlarm = () => {
             const refresh = () => this.refresh();
@@ -59,6 +66,12 @@ export default class AlarmManage extends React.Component {
                         查看详情
                     </Link>,
                     <Link
+                        key={`edit-${id}`}
+                        onClick={openEditAlarmForm}
+                    >
+                        编辑
+                    </Link>,
+                    <Link
                         key={`delete-${id}`}
                         onClick={deleteAlarm}
                     >
@@ -86,8 +99,14 @@ export default class AlarmManage extends React.Component {
         this.refresh();
     };
 
+    closeEditAlarmForm = () => this.setState({ editAlarmFormVisible: false });
+
     render() {
-        const { refreshList, alarmList, drawerVisible, drawerData } = this.state;
+        const {
+            refreshList, alarmList,
+            drawerVisible, drawerData,
+            editAlarmFormVisible, editingData
+        } = this.state;
         const { Title } = Typography;
 
         return (
@@ -115,6 +134,14 @@ export default class AlarmManage extends React.Component {
                     data={drawerData}
                     onHandleSuccess={this.onHandleSuccess}
                 />
+                {editAlarmFormVisible && (
+                    <EditAlarm
+                        visible={editAlarmFormVisible}
+                        onClose={this.closeEditAlarmForm}
+                        data={editingData}
+                        refresh={this.refresh}
+                    />
+                )}
             </>
         );
     }
