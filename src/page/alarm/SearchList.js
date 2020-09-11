@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Radio, Row, Select } from 'antd';
 import ChemicalInput from '../chemical/ChemicalInput';
-import { stateTypes } from './config';
+import { stateTypes } from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
 import { getAlarmListUrl } from '../../http_request/url';
 

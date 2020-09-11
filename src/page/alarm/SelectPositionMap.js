@@ -3,7 +3,7 @@ import { Button, Col, Input, message, Row, Space, Tooltip } from 'antd';
 import { AimOutlined, SearchOutlined } from '@ant-design/icons';
 import md5 from 'js-md5';
 import ReactQMap from 'better-react-qmap';
-import { qqMapKey, webServiceSecretKey, defaultCenter, nullPos, parseLatLng } from './config';
+import { qqMapKey, webServiceSecretKey, defaultCenter, nullPos, parseLatLng, toLatLngText } from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
 import { qqMapUrl } from '../../http_request/url';
 
@@ -83,7 +83,7 @@ export default class SelectPositionMap extends React.Component {
         const { Marker, MarkerAnimation } = windowMap;
         const { lat, lng } = this.currentCenter;
         this.setState({
-                latLngText: `${lng.toFixed(5)},${lat.toFixed(5)}`
+                latLngText: toLatLngText(lat, lng)
             }, this.triggerChange);
         this.marker = new Marker({
             map: classMap,

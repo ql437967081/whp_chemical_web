@@ -4,7 +4,7 @@ import { MehOutlined } from '@ant-design/icons';
 import SearchList from './SearchList';
 import DetailDrawer from './DetailDrawer';
 import EditAlarm from './EditAlarm';
-import { stateTypes } from './config';
+import { stateTypes } from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
 import { deleteAlarmUrl } from '../../http_request/url';
 

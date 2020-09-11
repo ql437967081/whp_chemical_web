@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Col, Descriptions, Drawer, message, Modal, Row } from 'antd';
 import ReactQMap from 'better-react-qmap';
-import { stateTypes, qqMapKey, parseLatLng } from './config';
+import { stateTypes, qqMapKey, parseLatLng } from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
 import { handleAlarmUrl } from '../../http_request/url';
 

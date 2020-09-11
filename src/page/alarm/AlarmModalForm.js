@@ -1,7 +1,7 @@
 import React from 'react';
 import { message, Modal, Form, Input, Select } from 'antd';
 import SelectPositionMap  from './SelectPositionMap';
-import { nullPos } from './config';
+import { nullPos } from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
 import { getAlarmTypesUrl } from '../../http_request/url';
 

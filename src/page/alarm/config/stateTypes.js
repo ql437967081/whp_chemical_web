@@ -23,19 +23,4 @@ const stateTypes = [
     { name: '拒绝处理', operations: [] }
 ];
 
-const qqMapKey = '6J2BZ-UOHRJ-D63FH-KXB4N-LDMU5-PQFPD';
-
-const webServiceSecretKey = '4SITQScz2lys40QRGY8PrGId6ceiyze7';
-
-const defaultCenter = { latitude: 39.9, longitude: 116.4 };
-
-const nullPos = ',';
-
-const parseLatLng = position => {
-    const latLng = position.split(',');
-    const latitude = parseFloat(latLng[1]);
-    const longitude = parseFloat(latLng[0]);
-    return { latitude, longitude };
-};
-
-export { stateTypes, qqMapKey, webServiceSecretKey, defaultCenter, nullPos, parseLatLng };
+export default stateTypes;
