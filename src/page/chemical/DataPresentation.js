@@ -1,8 +1,11 @@
 import React from 'react';
-import { Affix, Button, Col, Collapse, Descriptions, Row, Space, Typography } from 'antd';
-import { WarningOutlined } from '@ant-design/icons';
+import { Affix, Button, Col, Collapse, Descriptions, message, Modal, Row, Space, Typography } from 'antd';
+import { DeleteOutlined, WarningOutlined } from '@ant-design/icons';
 import NewAlarm from '../alarm/NewAlarm';
 import * as cfg from './config/config';
+import { axios, handleFailure } from '../../http_request/default';
+import { delChemicalUrl } from '../../http_request/url';
+
 const { Panel } = Collapse;
 const { collapseHeaderConfig } = cfg;
 
@@ -14,6 +17,25 @@ export default class DataPresentation extends React.Component {
     openNewAlarmForm = () => this.setState({ newAlarmFormVisible: true });
 
     closeNewAlarmForm = () => this.setState({ newAlarmFormVisible: false });
+
+    deleteChemical = () => {
+        const { data, onDeletionComplete } = this.props;
+        const { id, cnName, cas, formula } = data;
+        const chemicalStr = `${cas} ${cnName} [${formula}]`;
+        Modal.confirm({
+            title: `是否确定删除化学品：${chemicalStr} ？`,
+            onOk() {
+                return axios.post(delChemicalUrl, null, { params: { chemicalId: id } })
+                    .then(function (response) {
+                        console.log(response);
+                        onDeletionComplete();
+                        message.success(`化学品：${chemicalStr} 删除成功！`);
+                    })
+                    .catch(handleFailure);
+            },
+            onCancel() {}
+        });
+    };
 
     processDescriptions = (descriptionsConfig, index) => {
         const { Item } = Descriptions;
@@ -200,7 +222,16 @@ export default class DataPresentation extends React.Component {
                         })}
                     </Collapse>
                     <Row justify="space-between">
-                        <Col />
+                        <Col>
+                            <Affix offsetBottom={10}>
+                                <Button
+                                    type="primary" shape={"round"} icon={<DeleteOutlined />} danger
+                                    onClick={this.deleteChemical}
+                                >
+                                    删除
+                                </Button>
+                            </Affix>
+                        </Col>
                         <Col>
                             <Affix offsetBottom={10}>
                                 <Button

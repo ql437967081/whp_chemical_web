@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AutoComplete } from 'antd';
 import data51 from './mock/data51';
 import data52 from './mock/data52';
@@ -44,48 +44,68 @@ const fetch = (value, callback) => {
     timeout = setTimeout(fake, 300);
 };
 
-export default function ChemicalInput(props) {
-    const [value, setValue] = useState('');
-    const [options, setOptions] = useState([ data51, data52 ]);
+export default class ChemicalInput extends React.Component {
+    state = {
+        value: '',
+        options: [ data51, data52 ]
+    };
 
-    const onSearch = value => {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const { toDelete, onDeletionComplete } = this.props;
+        if (toDelete) {
+            const { options } = this.state;
+            if (options.find(chemical => chemical.id === toDelete)) {
+                this.setOptions(options.filter(chemical => chemical.id !== toDelete));
+            }
+            onDeletionComplete();
+        }
+    }
+
+    setOptions = options => this.setState({ options });
+
+    setValue = value => this.setState({ value });
+
+    onSearch = value => {
         if (value) {
-            fetch(value, data => setOptions(data));
+            fetch(value, data => this.setOptions(data));
         } else {
-            setOptions([]);
+            this.setOptions([]);
         }
     };
 
-    const onSelect = data => {
+    onSelect = data => {
         console.log('onSelect', data);
         const id = parseInt(data);
-        props.onSelect(options.find(chemical => chemical.id === id));
-        setValue('');
+        this.props.onSelect(this.state.options.find(chemical => chemical.id === id));
+        this.setValue('');
     };
 
-    const onChange = data => {
-        setValue(data);
+    onChange = data => {
+        this.setValue(data);
     };
 
-    return (
-        <AutoComplete
-            value={value}
-            style={{
-                width: 300,
-            }}
-            onSelect={onSelect}
-            onSearch={onSearch}
-            onChange={onChange}
-            placeholder={props.placeholder}
-        >
-            {options.map(chemical => {
-                const { id, cnName, cas, formula } = chemical;
-                return (
-                    <Option key={id} value={`${id}`}>
-                        {cas}&nbsp;&nbsp;&nbsp;{cnName}&nbsp;&nbsp;&nbsp;[{formula}]
-                    </Option>
-                );
-            })}
-        </AutoComplete>
-    );
+    render() {
+        const { value, options } = this.state;
+        return (
+            <AutoComplete
+                value={value}
+                style={{
+                    width: 300,
+                }}
+                onSelect={this.onSelect}
+                onSearch={this.onSearch}
+                onChange={this.onChange}
+                placeholder={this.props.placeholder}
+            >
+                {options.map(chemical => {
+                    const { id, cnName, cas, formula } = chemical;
+                    return (
+                        <Option key={id} value={`${id}`}>
+                            {cas}&nbsp;&nbsp;&nbsp;{cnName}&nbsp;&nbsp;&nbsp;[{formula}]
+                        </Option>
+                    );
+                })}
+            </AutoComplete>
+        );
+    }
 };

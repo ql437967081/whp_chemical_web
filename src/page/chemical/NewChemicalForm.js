@@ -186,7 +186,7 @@ export default function NewChemicalForm({ onAdditionSuccess }) {
         };
 
         for (let propName in addChemicalVO) {
-            if (!addChemicalVO[propName]) addChemicalVO[propName] = null;
+            if (!addChemicalVO[propName]) addChemicalVO[propName] = '';
         }
 
         for (let book of cfg.bookConfig) {
@@ -200,14 +200,13 @@ export default function NewChemicalForm({ onAdditionSuccess }) {
     const onFinish = values => {
         console.log('Received values of form: ', values);
 
-        const addChemicalVO = processChemicalValue(values);
-        console.log('Final addChemicalVO: ', addChemicalVO);
-        const { cnName, cas } = addChemicalVO;
-
         Modal.confirm({
             title: '是否确认提交并生成二维码？',
             onOk() {
                 const { post } = axios;
+                const addChemicalVO = processChemicalValue(values);
+                console.log('Final addChemicalVO: ', addChemicalVO);
+                const { cnName, cas } = addChemicalVO;
                 return post(addChemicalUrl, addChemicalVO)
                     .then(function (response) {
                         console.log(response.data);
