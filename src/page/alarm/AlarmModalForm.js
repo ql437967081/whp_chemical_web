@@ -104,73 +104,75 @@ export default class AlarmModalForm extends React.Component {
                 onCancel={onClose}
                 onOk={this.onSubmit}
             >
-                <Form
-                    ref={this.formRef}
-                    {...layout}
-                    initialValues={initialValues}
-                >
-                    <Form.Item
-                        label={'化学品名称'}
+                {!onEdit || typeOptions.length ? (
+                    <Form
+                        ref={this.formRef}
+                        {...layout}
+                        initialValues={initialValues}
                     >
-                        {chemicalName}
-                    </Form.Item>
-                    <Form.Item
-                        name={'username'}
-                        label={'报警人'}
-                        rules={requiredRules('报警人')}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name={'contact'}
-                        label={'联系方式'}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name={'title'}
-                        label={'描述问题'}
-                        rules={requiredRules('描述问题')}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name={'type'}
-                        label={'报警类型'}
-                    >
-                        <Select
-                            placeholder={'未知类型'}
-                            allowClear
+                        <Form.Item
+                            label={'化学品名称'}
                         >
-                            {typeOptions}
-                        </Select>
-                    </Form.Item>
-                    <Form.Item
-                        name={'position'}
-                        label={'位置信息'}
-                        rules={[
-                            { required: true },
-                            { validator: this.checkPosition }
-                        ]}
-                    >
-                        <SelectPositionMap
-                            setAddress={address => this.formRef.current.setFieldsValue({ address })}
-                        />
-                    </Form.Item>
-                    <Form.Item
-                        name={'address'}
-                        label={'具体位置'}
-                        rules={requiredRules('具体位置')}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        name={'remarks'}
-                        label={'备注信息'}
-                    >
-                        <Input.TextArea />
-                    </Form.Item>
-                </Form>
+                            {chemicalName}
+                        </Form.Item>
+                        <Form.Item
+                            name={'username'}
+                            label={'报警人'}
+                            rules={requiredRules('报警人')}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name={'contact'}
+                            label={'联系方式'}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name={'title'}
+                            label={'描述问题'}
+                            rules={requiredRules('描述问题')}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name={'type'}
+                            label={'报警类型'}
+                        >
+                            <Select
+                                placeholder={'未知类型'}
+                                allowClear
+                            >
+                                {typeOptions}
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            name={'position'}
+                            label={'位置信息'}
+                            rules={[
+                                { required: true },
+                                { validator: this.checkPosition }
+                            ]}
+                        >
+                            <SelectPositionMap
+                                setAddress={address => this.formRef.current.setFieldsValue({ address })}
+                            />
+                        </Form.Item>
+                        <Form.Item
+                            name={'address'}
+                            label={'具体位置'}
+                            rules={requiredRules('具体位置')}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name={'remarks'}
+                            label={'备注信息'}
+                        >
+                            <Input.TextArea />
+                        </Form.Item>
+                    </Form>
+                ) : null}
             </Modal>
         );
     }

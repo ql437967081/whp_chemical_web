@@ -48,7 +48,7 @@ export default function DetailDrawer({ visible, onClose, data, onHandleSuccess }
                     <Item label={'备注信息'}>{remarks}</Item>
                     <Item label={'处理状态'}>{name}</Item>
                 </Descriptions>
-                {operations.length && (
+                {operations.length ? (
                     <Row justify="space-around" gutter={[16, 16]}>
                         {operations.map(operation => {
                             const { op, buttonProps, toState } = operation;
@@ -82,7 +82,7 @@ export default function DetailDrawer({ visible, onClose, data, onHandleSuccess }
                             );
                         })}
                     </Row>
-                )}
+                ) : null}
             </>
         );
     };
