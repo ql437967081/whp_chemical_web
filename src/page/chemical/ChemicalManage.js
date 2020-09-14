@@ -3,7 +3,8 @@ import { Button, Col, Row, Space, Tabs } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ChemicalInput from './ChemicalInput';
 import DataPresentation from './DataPresentation';
-import NewChemicalForm from './NewChemicalForm';
+import NewChemical from './NewChemical';
+import EditChemical from './EditChemical';
 
 const { TabPane } = Tabs;
 
@@ -22,12 +23,43 @@ export default class ChemicalManage extends React.Component {
 
     onDeletionOfSearchOptionComplete = () => this.setState({ toDelete: false });
 
+    replaceFormOfDataPresentation = (data, activeKey) => {
+        const newPane = this.paneOfDataPresentation(data);
+        const newActiveKey = newPane.key;
+        const newPanes = [];
+        this.state.panes.forEach(pane => newPanes.push(pane.key === activeKey ? newPane : pane));
+        this.setState({
+            panes: newPanes,
+            activeKey: newActiveKey
+        });
+    };
+
     paneOfDataPresentation = data => {
         const { id, cnName } = data;
         const activeKey = `${id}`;
         return {
             title: cnName,
-            content: <DataPresentation data={data} onDeletionComplete={() => this.deleteTabAndSearchOption(id)} />,
+            content: (
+                <DataPresentation
+                    data={data}
+                    onDeletionComplete={() => this.deleteTabAndSearchOption(id)}
+                    onEdit={() => {
+                        const content = (
+                            <EditChemical
+                                data={data}
+                                onEditionSuccess={data => this.replaceFormOfDataPresentation(data, activeKey)}
+                            />
+                        );
+                        const newPane = { title: `${cnName} [编辑]`, content, key: activeKey };
+                        const newPanes = [];
+                        this.state.panes.forEach(pane => newPanes.push(pane.key === activeKey ? newPane : pane));
+                        this.setState({
+                            panes: newPanes,
+                            activeKey
+                        });
+                    }}
+                />
+            ),
             key: activeKey
         };
     };
@@ -62,22 +94,12 @@ export default class ChemicalManage extends React.Component {
 
     add = () => {
         const activeKey = `newTab${this.newTabIndex++}`;
-        const content = (
-            <NewChemicalForm
-                onAdditionSuccess={data => {
-                    const newPane = this.paneOfDataPresentation(data);
-                    const newActiveKey = newPane.key;
-                    const newPanes = [];
-                    this.state.panes.forEach(pane => newPanes.push(pane.key === activeKey ? newPane : pane));
-                    this.setState({
-                        panes: newPanes,
-                        activeKey: newActiveKey
-                    });
-                }}
-            />
-        );
         this.setState({
-            panes: this.state.panes.concat({ title: `新增化学品 ${this.newTabIndex}`, content, key: activeKey }),
+            panes: this.state.panes.concat({
+                title: `新增化学品 ${this.newTabIndex}`,
+                content: <NewChemical onAdditionSuccess={data => this.replaceFormOfDataPresentation(data, activeKey)} />,
+                key: activeKey
+            }),
             activeKey
         });
     };

@@ -1,12 +1,11 @@
 import basicConfig from './basicConfig';
 import physicalChemicalPropertiesConfig from './physicalChemicalPropertiesConfig';
-import physicalChemicalPropertiesConfigForAdditon from './physicalChemicalPropertiesConfigForAdditon';
+import physicalChemicalPropertiesConfigForAddition from './physicalChemicalPropertiesConfigForAddition';
 import disposalConfig from './disposalConfig';
 import disposalConfigForAddition  from './disposalConfigForAddition';
 import firstAidConfig from './firstAidConfig';
 import leakMethodConfig from './leakMethodConfig';
 import stepStoreAttentionConfig from './stepStoreAttentionConfig';
-import stepStoreAttentionConfigForAddition from './stepStoreAttentionConfigForAddition';
 import selfProtectConfig from './selfProtectConfig';
 import bookConfig from './bookConfig';
 
@@ -32,28 +31,16 @@ const collapseHeaderConfig = [
     { header: '列入名录情况', key: 'book' }
 ];
 
-const collapseHeaderConfigForAddition = [];
-for (let item of collapseHeaderConfig) {
-    const { header, key } = item;
-    collapseHeaderConfigForAddition.push(
-        key.includes('store') || key.includes('Store')
-            ? { header, key: key.replace(/store/g, 'storage').replace(/Store/g, 'Storage') }
-            : item
-    );
-}
-
 export {
     collapseHeaderConfig,
-    collapseHeaderConfigForAddition,
     basicConfig,
     physicalChemicalPropertiesConfig,
-    physicalChemicalPropertiesConfigForAdditon,
+    physicalChemicalPropertiesConfigForAddition,
     disposalConfig,
     disposalConfigForAddition,
     firstAidConfig,
     leakMethodConfig,
     stepStoreAttentionConfig,
-    stepStoreAttentionConfigForAddition,
     selfProtectConfig,
     bookConfig
 };

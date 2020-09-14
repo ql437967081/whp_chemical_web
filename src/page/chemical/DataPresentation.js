@@ -1,6 +1,6 @@
 import React from 'react';
 import { Affix, Button, Col, Collapse, Descriptions, message, Modal, Row, Space, Typography } from 'antd';
-import { DeleteOutlined, WarningOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, WarningOutlined } from '@ant-design/icons';
 import NewAlarm from '../alarm/NewAlarm';
 import * as cfg from './config/config';
 import { axios, handleFailure } from '../../http_request/default';
@@ -35,6 +35,10 @@ export default class DataPresentation extends React.Component {
             },
             onCancel() {}
         });
+    };
+
+    editChemical = () => {
+        this.props.onEdit();
     };
 
     processDescriptions = (descriptionsConfig, index) => {
@@ -222,24 +226,29 @@ export default class DataPresentation extends React.Component {
                         })}
                     </Collapse>
                     <Row justify="space-between">
+                        <Col />
                         <Col>
                             <Affix offsetBottom={10}>
-                                <Button
-                                    type="primary" shape={"round"} icon={<DeleteOutlined />} danger
-                                    onClick={this.deleteChemical}
-                                >
-                                    删除
-                                </Button>
-                            </Affix>
-                        </Col>
-                        <Col>
-                            <Affix offsetBottom={10}>
-                                <Button
-                                    type="primary" shape={"round"} icon={<WarningOutlined />} danger
-                                    onClick={this.openNewAlarmForm}
-                                >
-                                    报警
-                                </Button>
+                                <Space size={"large"}>
+                                    <Button
+                                        type="primary" icon={<EditOutlined />}
+                                        onClick={this.editChemical}
+                                    >
+                                        编辑
+                                    </Button>
+                                    <Button
+                                        type="primary" shape={"round"} icon={<DeleteOutlined />} danger
+                                        onClick={this.deleteChemical}
+                                    >
+                                        删除
+                                    </Button>
+                                    <Button
+                                        type="primary" shape={"round"} icon={<WarningOutlined />} danger
+                                        onClick={this.openNewAlarmForm}
+                                    >
+                                        报警
+                                    </Button>
+                                </Space>
                             </Affix>
                         </Col>
                     </Row>

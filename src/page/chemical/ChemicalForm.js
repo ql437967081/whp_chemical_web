@@ -1,12 +1,10 @@
 import React from 'react';
-import { Affix, Button, Checkbox, Col, Collapse, Form, Input, message, Modal, Row, Space } from 'antd';
+import { Affix, Button, Checkbox, Col, Collapse, Form, Input, message, Row, Space } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 import * as cfg from './config/config';
-import { axios, handleFailure } from '../../http_request/default';
-import { addChemicalUrl, genQrCodeUrl, getChemicalDetailUrl } from '../../http_request/url';
 
 const { Panel } = Collapse;
-const { collapseHeaderConfigForAddition } = cfg;
+const { collapseHeaderConfig } = cfg;
 
 const processDescriptions = (descriptionsConfig, index, config) => {
     const layout = {
@@ -38,12 +36,12 @@ const processDescriptions = (descriptionsConfig, index, config) => {
                 })}
             </Row>
         ),
-        ...collapseHeaderConfigForAddition[index]
+        ...collapseHeaderConfig[index]
     });
 };
 
 const processTypography = (index, config) => {
-    const typographyConfig = collapseHeaderConfigForAddition[index];
+    const typographyConfig = collapseHeaderConfig[index];
     const { key, header } = typographyConfig;
     config.push({
         formItems: (
@@ -71,7 +69,7 @@ const processLabeledTypography = (labeledTypographyConfig, index, config) => {
                 </Form.Item>
             );
         }),
-        ...collapseHeaderConfigForAddition[index]
+        ...collapseHeaderConfig[index]
     });
 };
 
@@ -83,7 +81,7 @@ const processBasic = config => {
 const processEmergency = config => processTypography(1, config);
 
 const processPhysicalChemicalProperties = config =>
-    processDescriptions(cfg.physicalChemicalPropertiesConfigForAdditon, 2, config);
+    processDescriptions(cfg.physicalChemicalPropertiesConfigForAddition, 2, config);
 
 const processDangerClass = config => {
     const ghsTags = [];
@@ -105,7 +103,7 @@ const processDangerClass = config => {
                 </Form.Item>
             </>
         ),
-        ...collapseHeaderConfigForAddition[3]
+        ...collapseHeaderConfig[3]
     });
 };
 
@@ -130,7 +128,7 @@ const processFirstAid = config => processLabeledTypography(cfg.firstAidConfig, 1
 const processLeakMethod = config => processLabeledTypography(cfg.leakMethodConfig, 13, config);
 
 const processStepStoreAttentionConfig = config =>
-    processLabeledTypography(cfg.stepStoreAttentionConfigForAddition, 14, config);
+    processLabeledTypography(cfg.stepStoreAttentionConfig, 14, config);
 
 const processEngControl = config => processTypography(15, config);
 
@@ -151,7 +149,7 @@ const processBook = config => {
                 </Form.Item>
             );
         }),
-        ...collapseHeaderConfigForAddition[18]
+        ...collapseHeaderConfig[18]
     });
 };
 
@@ -177,7 +175,7 @@ const processData = config => {
     processBook(config);
 };
 
-export default function NewChemicalForm({ onAdditionSuccess }) {
+export default function NewChemicalForm({ onFormFinish, onEdit }) {
     const processChemicalValue = value => {
         const { other } = value;
         const addChemicalVO = {
@@ -199,31 +197,7 @@ export default function NewChemicalForm({ onAdditionSuccess }) {
 
     const onFinish = values => {
         console.log('Received values of form: ', values);
-
-        Modal.confirm({
-            title: '是否确认提交并生成二维码？',
-            onOk() {
-                const { post } = axios;
-                const addChemicalVO = processChemicalValue(values);
-                console.log('Final addChemicalVO: ', addChemicalVO);
-                const { cnName, cas } = addChemicalVO;
-                return post(addChemicalUrl, addChemicalVO)
-                    .then(function (response) {
-                        console.log(response.data);
-                        return post(genQrCodeUrl, { cas });
-                    })
-                    .then(function (response) {
-                        console.log(response.data);
-                        message.success(`化学品 ${cnName} 添加成功！`);
-                        return post(getChemicalDetailUrl, { cas });
-                    })
-                    .then(function (response) {
-                        onAdditionSuccess(response.data['data']);
-                    })
-                    .catch(handleFailure);
-            },
-            onCancel() {}
-        });
+        onFormFinish(values, processChemicalValue);
     };
 
     const onFinishFailed = info => {
@@ -236,9 +210,9 @@ export default function NewChemicalForm({ onAdditionSuccess }) {
     processData(config);
 
     return (
-        <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
+        <Form onFinish={onFinish} onFinishFailed={onFinishFailed} initialValues={onEdit}>
             <Space direction={"vertical"}>
-                <Collapse defaultActiveKey={collapseHeaderConfigForAddition[0].key}>
+                <Collapse defaultActiveKey={collapseHeaderConfig[0].key}>
                     {config.map(props => {
                         const { key, header, formItems, disabled } = props;
                         const panelProps = { key, header, forceRender: true };
@@ -263,4 +237,4 @@ export default function NewChemicalForm({ onAdditionSuccess }) {
             </Space>
         </Form>
     );
-};
+}
